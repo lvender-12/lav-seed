@@ -4,6 +4,31 @@ use crate::{
     transform::{DefaultTransform, Transform},
 };
 
+/// A deterministic numeric ID generator based on affine permutation.
+///
+/// This generator produces unique IDs within a fixed range without collisions.
+/// The output is deterministic based on the configuration and seed.
+///
+/// # Properties
+/// - Collision-free within configured range
+/// - Fast O(1) generation
+/// - Fully deterministic output
+/// - Supports custom transform strategies
+///
+/// # Example
+/// ```
+/// use lav_seed::Generator;
+///
+/// let mut gen = Generator::new(0)
+///     .min_seed(1)
+///     .max_seed(1_000_000)
+///     .build()
+///     .unwrap();
+///
+/// let id = gen.generate().unwrap();
+/// println!("{}", id);
+/// ```
+
 pub struct Generator {
     config: Config,
     counter: u64,
@@ -30,6 +55,16 @@ impl Generator {
         self.config.max - self.config.min + 1
     }
 
+    /// Generates the next unique ID.
+    ///
+    /// # Returns
+    /// - `Ok(u64)` → next available ID in range
+    /// - `Err(LavError::Exhausted)` → no more IDs available
+    ///
+    /// # Example
+    /// ```
+    /// let id = gen.generate().unwrap();
+    /// ```
     pub fn generate(&mut self) -> Result<u64, LavError> {
         let range = self.range();
 
@@ -49,6 +84,9 @@ impl Generator {
         Ok(id)
     }
 
+    /// Returns the next ID without advancing the counter.
+    ///
+    /// This is useful for previewing output without consuming it.
     pub fn peek(&self) -> Result<u64, LavError> {
         let range = self.range();
 

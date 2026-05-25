@@ -1,5 +1,8 @@
 use crate::LavError;
 
+/// Configuration for `Lav-Seed` generator.
+///
+/// Defines range, seed key, and starting counter.
 pub struct Config {
     pub(crate) min: u64,
     pub(crate) max: u64,

@@ -16,7 +16,7 @@ use crate::{
 /// - Supports custom transform strategies
 ///
 /// # Example
-/// ```
+/// ```rust
 /// use lav_seed::Generator;
 ///
 /// let mut gen = Generator::new(0)

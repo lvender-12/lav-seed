@@ -48,7 +48,7 @@ impl Generator {
         }
     }
 
-    pub fn new(initial_counter: u64) -> GeneratorBuilder {
+    pub fn build(initial_counter: u64) -> GeneratorBuilder {
         GeneratorBuilder::new(initial_counter)
     }
 

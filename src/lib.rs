@@ -31,7 +31,7 @@ mod tests {
 
     #[test]
     fn test_generate() {
-        let mut g = Generator::new(0)
+        let mut g = Generator::build(0)
             .min_seed(100_000_000)
             .max_seed(999_999_999)
             .build()
@@ -45,7 +45,7 @@ mod tests {
 
     #[test]
     fn test_unique_bulk() {
-        let mut g = Generator::new(0)
+        let mut g = Generator::build(0)
             .min_seed(100_000_000)
             .max_seed(999_999_999)
             .key(12345)
@@ -63,7 +63,7 @@ mod tests {
 
     #[test]
     fn test_exhausted() {
-        let mut g = Generator::new(0).min_seed(1).max_seed(3).build().unwrap();
+        let mut g = Generator::build(0).min_seed(1).max_seed(3).build().unwrap();
 
         assert!(g.generate().is_ok());
         assert!(g.generate().is_ok());
@@ -74,7 +74,7 @@ mod tests {
 
     #[test]
     fn test_peek() {
-        let mut g = Generator::new(0)
+        let mut g = Generator::build(0)
             .min_seed(1000)
             .max_seed(9999)
             .build()
@@ -88,7 +88,7 @@ mod tests {
 
     #[test]
     fn test_counter() {
-        let mut g = Generator::new(0).build().unwrap();
+        let mut g = Generator::build(0).build().unwrap();
 
         assert_eq!(g.counter(), 0);
 
@@ -100,7 +100,11 @@ mod tests {
 
     #[test]
     fn test_remaining() {
-        let mut g = Generator::new(0).min_seed(1).max_seed(10).build().unwrap();
+        let mut g = Generator::build(0)
+            .min_seed(1)
+            .max_seed(10)
+            .build()
+            .unwrap();
 
         assert_eq!(g.remaining(), 10);
 
@@ -111,7 +115,7 @@ mod tests {
 
     #[test]
     fn test_reset() {
-        let mut g = Generator::new(0).build().unwrap();
+        let mut g = Generator::build(0).build().unwrap();
 
         g.generate().unwrap();
         g.generate().unwrap();
@@ -125,7 +129,7 @@ mod tests {
 
     #[test]
     fn test_contains() {
-        let g = Generator::new(0)
+        let g = Generator::build(0)
             .min_seed(100)
             .max_seed(200)
             .build()
@@ -141,7 +145,7 @@ mod tests {
 
     #[test]
     fn test_validate() {
-        let g = Generator::new(0)
+        let g = Generator::build(0)
             .min_seed(100)
             .max_seed(200)
             .build()
@@ -154,7 +158,7 @@ mod tests {
 
     #[test]
     fn test_iterator() {
-        let g = Generator::new(0).min_seed(1).max_seed(5).build().unwrap();
+        let g = Generator::build(0).min_seed(1).max_seed(5).build().unwrap();
 
         let ids: Vec<u64> = g.take(5).collect();
 
@@ -167,7 +171,11 @@ mod tests {
 
     #[test]
     fn test_jump() {
-        let mut g = Generator::new(0).min_seed(1).max_seed(100).build().unwrap();
+        let mut g = Generator::build(0)
+            .min_seed(1)
+            .max_seed(100)
+            .build()
+            .unwrap();
 
         g.jump(10).unwrap();
 
@@ -176,7 +184,7 @@ mod tests {
 
     #[test]
     fn test_exhausted_state() {
-        let mut g = Generator::new(0).min_seed(1).max_seed(2).build().unwrap();
+        let mut g = Generator::build(0).min_seed(1).max_seed(2).build().unwrap();
 
         assert!(!g.exhausted());
 
@@ -191,7 +199,7 @@ mod tests {
         let min = 1u64;
         let max = 1_000_000u64;
 
-        let mut g = Generator::new(0)
+        let mut g = Generator::build(0)
             .min_seed(min)
             .max_seed(max)
             .key(12345)

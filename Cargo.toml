@@ -4,7 +4,7 @@ version = "0.1.0"
 edition = "2024"
 
 authors = ["Lvender"]
-description = "Deterministic numeric ID generator with collision-free affine permutation."
+description = "Fast deterministic numeric ID generator using permutation techniques with collision-free guarantees."
 license = "MIT"
 repository = "https://github.com/lvender-12/lav-seed"
 readme = "README.md"

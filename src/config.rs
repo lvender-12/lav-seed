@@ -62,3 +62,9 @@ impl ConfigBuilder {
         Ok(self.config)
     }
 }
+
+impl Default for ConfigBuilder {
+    fn default() -> Self {
+        Self::new()
+    }
+}

@@ -3,11 +3,10 @@ mod error;
 mod generator;
 mod transform;
 
+pub use config::ConfigBuilder;
 pub use error::LavError;
 pub use generator::Generator;
 pub use transform::{ClosureTransform, DefaultTransform, Transform};
-
-use crate::config::ConfigBuilder;
 
 #[allow(dead_code)]
 pub fn example() {

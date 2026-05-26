@@ -25,7 +25,7 @@ lav-seed = "0.1"
 ```rust
 use lav_seed::Generator;
 
-let mut gen = Generator::new(0)
+let mut gen = Generator::build(0)
     .min_seed(1)
     .max_seed(1_000_000)
     .key(12345)

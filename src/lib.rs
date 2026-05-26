@@ -1,27 +1,12 @@
 mod config;
 mod error;
 mod generator;
-mod transform;
+pub mod transform;
 
 pub use config::ConfigBuilder;
 pub use error::LavError;
 pub use generator::Generator;
 pub use transform::{ClosureTransform, DefaultTransform, Transform};
-
-#[allow(dead_code)]
-pub fn example() {
-    let config = ConfigBuilder::new()
-        .min_seed(100)
-        .max_seed(1_000_000)
-        .key(42)
-        .initial_counter(0)
-        .build()
-        .unwrap();
-
-    let mut g = Generator::from_config(config);
-
-    let _id = g.generate().unwrap();
-}
 
 #[cfg(test)]
 mod tests {

@@ -4,33 +4,28 @@ use crate::{
     transform::{DefaultTransform, Transform},
 };
 
-// A deterministic numeric ID generator based on affine permutation.
-//
-// This generator produces unique IDs within a fixed range without collisions.
-// The output is deterministic based on the configuration and seed.
-//
-// # Properties
-// - Collision-free within configured range
-// - Fast O(1) generation
-// - Fully deterministic output
-// - Supports custom transform strategies
-//
-// # Example
-// ```rust
-// use lav_seed::Generator;
-//
-// fn main() {
-//     let mut gen = Generator::new(0)
-//         .min_seed(1)
-//         .max_seed(1_000_000)
-//         .build()
-//         .unwrap();
-//
-//     let id = gen.generate().unwrap();
-//     println!("{}", id);
-// }
-// ```
-
+/// A deterministic numeric ID generator based on affine permutation.
+///
+/// This generator produces unique IDs within a fixed range without collisions.
+/// The output is deterministic based on the configuration and seed.
+///
+/// # Properties
+/// - Collision-free within configured range
+/// - Fast O(1) generation
+/// - Fully deterministic output
+/// - Supports custom transform strategies
+///
+/// # Example
+/// ```rust
+///     use lav_seed::Generator;
+///     let mut generator = Generator::build(0)
+///         .min_seed(1)
+///         .max_seed(1_000_000)
+///         .build()
+///         .unwrap();
+///     let id = generator.generate().unwrap();
+///     println!("{}", id);
+/// ```
 pub struct Generator {
     config: Config,
     counter: u64,
@@ -57,27 +52,17 @@ impl Generator {
         self.config.max - self.config.min + 1
     }
 
-    // Generates the next unique ID.
-    //
-    // # Returns
-    // - `Ok(u64)` → next available ID in range
-    // - `Err(LavError::Exhausted)` → no more IDs available
-    //
-    // # Example
-    // ```rust
-    // use lav_seed::Generator;
-    //
-    // fn main() {
-    //     let mut gen = Generator::new(0)
-    //         .min_seed(1)
-    //         .max_seed(1_000_000)
-    //         .build()
-    //         .unwrap();
-    //
-    //     let id = gen.generate().unwrap();
-    //     println!("{}", id);
-    // }
-    // ```
+    /// # Example
+    /// ```rust
+    ///     use lav_seed::Generator;
+    ///     let mut generator = Generator::build(0)
+    ///         .min_seed(1)
+    ///         .max_seed(1_000_000)
+    ///         .build()
+    ///         .unwrap();
+    ///     let id = generator.generate().unwrap();
+    ///     println!("{}", id);
+    /// ```
     pub fn generate(&mut self) -> Result<u64, LavError> {
         let range = self.range();
 
@@ -97,9 +82,18 @@ impl Generator {
         Ok(id)
     }
 
-    // Returns the next ID without advancing the counter.
-    //
-    // This is useful for previewing output without consuming it.
+    /// # Example
+    /// ```rust
+    ///     use lav_seed::Generator;
+    ///     let mut generator = Generator::build(0)
+    ///         .min_seed(1)
+    ///         .max_seed(1_000_000)
+    ///         .build()
+    ///         .unwrap();
+    ///     let peeked = generator.peek().unwrap();
+    ///     let actual = generator.generate().unwrap();
+    ///     assert_eq!(peeked, actual);
+    /// ```
     pub fn peek(&self) -> Result<u64, LavError> {
         let range = self.range();
 
@@ -112,10 +106,12 @@ impl Generator {
         Ok(result + self.config.min)
     }
 
+    /// Resets the counter back to zero.
     pub fn reset(&mut self) {
         self.counter = 0;
     }
 
+    /// Jumps the counter forward by `amount`.
     pub fn jump(&mut self, amount: u64) -> Result<(), LavError> {
         self.counter = self
             .counter
@@ -125,18 +121,22 @@ impl Generator {
         Ok(())
     }
 
+    /// Returns the current counter value.
     pub fn counter(&self) -> u64 {
         self.counter
     }
 
+    /// Returns how many IDs are remaining before exhaustion.
     pub fn remaining(&self) -> u64 {
         self.range().saturating_sub(self.counter)
     }
 
+    /// Returns `true` if all IDs in the range have been generated.
     pub fn exhausted(&self) -> bool {
         self.counter >= self.range()
     }
 
+    /// Validates whether `id` is within the configured range.
     pub fn validate(&self, id: u64) -> Result<(), LavError> {
         if id < self.config.min || id > self.config.max {
             return Err(LavError::InvalidSeed(id));
@@ -145,10 +145,12 @@ impl Generator {
         Ok(())
     }
 
+    /// Returns `true` if `id` is within the configured range.
     pub fn contains(&self, id: u64) -> bool {
         id >= self.config.min && id <= self.config.max
     }
 
+    /// Returns a reference to the current configuration.
     pub fn config(&self) -> &Config {
         &self.config
     }
